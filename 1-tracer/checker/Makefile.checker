@@ -1,0 +1,33 @@
+objects = _test/tracer_test.o
+
+.PHONY: all clean run pack _test_subdir_all _test_subdir_clean
+
+all: tracer_test
+
+build-pre: all
+
+tracer_test: _test_subdir_all _helper_subdir_all go
+	$(CC) -Wall -g -m32 -static -o $@ $(objects)
+_test_subdir_all:
+	make -C _test
+_helper_subdir_all:
+	make -C _helper
+go:
+	cp _helper/tracer_helper.ko .
+
+build-post:
+
+run: all
+	./run_tests.bash
+
+pack: clean
+	zip -r 1-tracer.zip _test/ _helper/ Makefile.checker\
+		_checker README
+
+clean: _test_subdir_clean _test_helper_clean
+	-rm -f tracer_test *~ tracer_helper.ko
+
+_test_subdir_clean:
+	make -C _test clean
+_test_helper_clean:
+	make -C _helper clean
