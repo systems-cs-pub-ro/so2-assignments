@@ -330,7 +330,7 @@ static void test_proc_entry_inexistent_after_rmmod(void)
 	init_test();
 	cleanup_test();
 
-	rc = system("ls /proc/tracer > /dev/null 2 >&1");
+	rc = system("ls /proc/tracer > /dev/null 2>&1");
 	test(__FUNCTION__, rc != 0, 2);
 }
 
