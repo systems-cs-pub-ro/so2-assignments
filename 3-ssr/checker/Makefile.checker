@@ -1,0 +1,23 @@
+#
+# Simple Software RAID - test Makefile
+#
+
+CFLAGS = -Wall -Wextra -g -m32
+LDFLAGS = -static -m32
+
+.PHONY: all build-pre build-post clean pack
+
+all: build-pre build-post
+
+build-pre:
+	make -C _test/
+
+build-post:
+	ln -sf _test/run-test run-test
+
+clean:
+	-make -C _test/ clean
+	rm -rf run-test 3-ssr.zip
+
+pack: clean
+	zip -r 3-ssr.zip _checker Makefile.checker README _test/
