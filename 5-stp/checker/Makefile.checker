@@ -1,0 +1,22 @@
+objects = _test/stp_test.o
+
+.PHONY: all clean pack _test_subdir_all _test_subdir_clean
+
+all: stp_test
+
+stp_test: _test_subdir_all $(objects)
+	$(CC) -Wall -g -m32 -static $(objects) -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -o $@
+
+_test_subdir_all:
+	make -C _test
+
+pack: clean
+	zip -r 5-stp.zip _test/ Makefile.checker _checker README
+
+clean: _test_subdir_clean
+	-rm -f stp_test *~
+	-rm -f 5-stp.zip
+
+_test_subdir_clean:
+	make -C _test clean
+
