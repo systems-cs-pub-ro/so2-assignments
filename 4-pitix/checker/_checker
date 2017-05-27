@@ -59,12 +59,16 @@ check_true()
     if ! test "$ret" = "0"; then
         end_string="failed"
         extra_string="$@"
+        ret=1
     else
         extra_string=""
         end_string="ok"
+        ret=0
     fi
 
     pretty_print "$start_string" "$end_string" "$extra_string"
+
+    return $ret
 }
 
 #
@@ -251,6 +255,9 @@ test_rw()
 
     verbose_comm "formating fs" "$mkfs_cmd" $1 $2 /tmp/pitix.loop
     check_true "mounting fs" mount -t pitix /tmp/pitix.loop /tmp/pitix.mnt/ -o loop
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
 
     get_statfs /tmp/pitix.mnt
     check_true "check total blocks" test "$cblocks" = "$blocks" || echo "$cblocks" = "$blocks"
@@ -267,6 +274,9 @@ test_rw()
 
     check_true "umounting fs" umount /tmp/pitix.mnt/
     check_true "mounting fs" mount -t pitix /tmp/pitix.loop /tmp/pitix.mnt/ -o loop
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
 
     check_statfs
 
@@ -304,6 +314,9 @@ test_ro()
     tar xfz pitix.files.tar.gz -C /tmp/pitix.ro
 
     check_true "mounting fs" mount -t pitix /tmp/pitix.loop /tmp/pitix.mnt/ -o loop
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
 
     for file in $(find /tmp/pitix.ro -type f | cut -f4- -d/); do
         get_file_attrs /tmp/pitix.ro/$file
