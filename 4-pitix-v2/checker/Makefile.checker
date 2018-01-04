@@ -23,5 +23,5 @@ clean:
 	make -C _test/ clean
 
 pack: clean
-	zip -r 4-pitix.zip _test/ pitix.files.tar.gz pitix.loop.gz _checker Makefile.checker README
+	zip -r 4-pitix.zip _test/ pitix.files.tar.gz pitix.loop.gz _checker Makefile.checker README create_pitix_loop.sh
 
