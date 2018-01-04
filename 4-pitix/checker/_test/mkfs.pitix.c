@@ -76,11 +76,11 @@ int main(int argc, char **argv)
 
 	fseek(file, 4096, SEEK_SET);
 	memset(buffer, 0, 4096);
-	/* alloc inode 0 */
 	buffer[0] = 0x01;
+	/* alloc inode 0 */
+	fwrite(buffer, block_size, 1, file);
 	/* alloc block 0 */
-	buffer[block_size] = 0x01;
-	fwrite(buffer, 4096, 1, file);
+	fwrite(buffer, block_size, 1, file);
 
 	/* initialize root inode */
 	memset(&root_inode, 0, sizeof(root_inode));
