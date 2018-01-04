@@ -334,6 +334,8 @@ cleanup_world()
     rm /tmp/pitix.loop > /dev/null 2>&1
     rm pitix.loop > /dev/null 2>&1
     rm -r /tmp/pitix.ro > /dev/null 2>&1
+    rm -r /tmp/pitix.rw > /dev/null 2>&1
+    rm -r /tmp/pitix.mnt > /dev/null 2>&1
 }
 
 cleanup_world
